@@ -1,9 +1,17 @@
 import base64
-import io
+import io, os
 from PIL import Image
 import pytesseract
+from ai_checks import disableAll
 
-pytesseract.pytesseract.tesseract_cmd = r'tesseract.exe'
+def checkTesseract():
+    if os.path.exists(r"C:/Program Files/Tesseract-OCR/tesseract.exe"):
+        return True
+    else:
+        disableAll()
+        return False
+
+pytesseract.pytesseract.tesseract_cmd = r"C:/Program Files/Tesseract-OCR/tesseract.exe"
 
 def textFromImage(dataurl):
     try:

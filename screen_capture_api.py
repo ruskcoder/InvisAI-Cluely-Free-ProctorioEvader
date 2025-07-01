@@ -1,9 +1,12 @@
 import webview
 import pyautogui
 import pynput.mouse as mouse
-from mouse_handler import MouseHandler
+from mouse_events_api import MouseEventsAPI
 from image_text import textFromImage
 from ai import doAI
+import os
+import sys
+import subprocess
 
 class ScreenCaptureAPI:
     def __init__(self):
@@ -12,7 +15,7 @@ class ScreenCaptureAPI:
         self.mouseListener = None
         self.isCapturing = False
         self.waitingForRelease = False
-        self.mouseHandler = MouseHandler(self)
+        self.mouseHandler = MouseEventsAPI(self)
         
     def startCapture(self):
         self.firstCorner = None
@@ -69,6 +72,7 @@ class ScreenCaptureAPI:
             # Convert screenshot to base64 data URL for display in browser
             import io
             import base64
+
             
             buffer = io.BytesIO()
             screenshot.save(buffer, format='PNG')
@@ -92,3 +96,30 @@ class ScreenCaptureAPI:
         except Exception as e:
             webview.windows[0].evaluate_js(f'captureError("{str(e)}")')
             return {"success": False, "message": str(e)}
+
+    def installTesseract(self):
+        webview.windows[0].destroy()
+        import urllib.request
+
+        def get_downloads_folder():
+            import ctypes.wintypes
+            CSIDL_PERSONAL = 0x0005
+            SHGFP_TYPE_CURRENT = 0
+            buf = ctypes.create_unicode_buffer(ctypes.wintypes.MAX_PATH)
+            ctypes.windll.shell32.SHGetFolderPathW(None, CSIDL_PERSONAL, None, SHGFP_TYPE_CURRENT, buf)
+            return os.path.join(buf.value, "Downloads")
+
+        try:
+            url = "https://github.com/tesseract-ocr/tesseract/releases/download/5.5.0/tesseract-ocr-w64-setup-5.5.0.20241111.exe"
+            downloads_folder = get_downloads_folder()
+            os.makedirs(downloads_folder, exist_ok=True)
+            exe_path = os.path.join(downloads_folder, "tesseract-ocr-w64-setup-5.5.0.20241111.exe")
+
+            if not os.path.exists(exe_path):
+                urllib.request.urlretrieve(url, exe_path)
+
+            subprocess.Popen([exe_path], shell=True)
+
+            return {"success": True, "message": f"Tesseract installer launched: {exe_path}"}
+        except Exception as e:
+            return {"success": False, "message": f"Failed to install Tesseract: {str(e)}"}

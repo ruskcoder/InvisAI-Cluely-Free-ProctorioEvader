@@ -3,6 +3,8 @@
     --background-color: rgba(54, 57, 64, 255);
     --button-color: #5863f4;
     --margin: 12px;
+    --title-bar-height: 40px;
+    --title-bar-bg: rgba(45, 48, 55, 255);
 }
 
 /* Reset and base styles */
@@ -21,7 +23,7 @@ body {
 
 .container {
     padding: var(--margin);
-    height: 100vh;
+    height: calc(100vh - var(--title-bar-height));
     display: flex;
     flex-direction: column;
     overflow: scroll;
@@ -49,6 +51,10 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
+}
+
+.warning a {
+    color: orange;
 }
 
 .hidden {
@@ -197,4 +203,76 @@ body {
 
 ::-webkit-scrollbar {
     display: none;
+}
+
+.notice {
+    font-size: 14px;
+    color: white;
+    width: 100%;
+    text-align: center;
+    opacity: 0.5;
+    margin-top: var(--margin);
+}
+
+/* Title Bar Styles */
+.title-bar {
+    height: var(--title-bar-height);
+    background-color: var(--title-bar-bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 12px;
+    padding-right: 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    /* cursor: move; */
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.title-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.app-icon {
+    font-size: 20px;
+    color: #ffffff;
+}
+
+.app-title {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.title-bar-right {
+    display: flex;
+    gap: 4px;
+}
+
+.title-bar-button {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* cursor: pointer; */
+    transition: background-color 0.2s ease;
+    color: #ffffff;
+}
+
+.title-bar-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.close-btn:hover {
+    background-color: #e74c3c;
+}
+
+.title-bar-button .material-symbols-rounded {
+    font-size: 18px;
 }

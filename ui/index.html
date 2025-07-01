@@ -17,6 +17,20 @@
           'opsz' 24
         }
         </style>
+    
+    <!-- Draggable Title Bar -->
+    <div class="title-bar" id="titleBar">
+        <div class="title-bar-left">
+            <span class="material-symbols-rounded app-icon">visibility</span>
+            <span class="app-title">InvisAI</span>
+        </div>
+        <div class="title-bar-right">
+            <button class="title-bar-button close-btn" onclick="closeWindow()">
+                <span class="material-symbols-rounded">close</span>
+            </button>
+        </div>
+    </div>
+    
     <div class="container">
         <div class="error hidden">
             <span class="material-symbols-rounded">error</span>
@@ -26,6 +40,11 @@
         <div class="warning hidden" id="geminiWarning">
             <span class="material-symbols-rounded">warning</span>
             <p>Please sign in to Gemini in Microsoft Edge and/or close Microsoft Edge to use this feature. </p>
+        </div>
+
+        <div class="warning hidden" id="tesseractWarning">
+            <span class="material-symbols-rounded">warning</span>
+            <p>Tesseract is not installed on this system. Few models will be disabled until this is installed. Click <a href="#" onclick="pywebview.api.installTesseract()">here</a> to install.</p>
         </div>
 
         <button id="startBtn" class="start-button" onclick="startCapture()">
@@ -57,6 +76,29 @@
                 </div>
             </div>
         </div>
+        <div class="menu working disabled" id="qwen">
+            <div class="title">
+                <p>**Qwen</p>
+                <span>No Option Given</span>
+            </div>
+            <div class="content-container">
+                <div class="content">
+                    
+                </div>
+            </div>
+        </div>
+        <div class="menu working disabled" id="deepseek">
+            <div class="title">
+                <p>**DeepSeek</p>
+                <span>No Option Given</span>
+            </div>
+            <div class="content-container">
+                <div class="content">
+                    
+                </div>
+            </div>
+        </div>
+        <p class="notice">** means WIP and may be unrelieable</p>
     </div>
 
     <script src="script.js"></script>

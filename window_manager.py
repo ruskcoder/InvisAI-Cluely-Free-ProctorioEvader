@@ -4,6 +4,7 @@ import time
 import win32gui
 import webview
 from ai_checks import checkGemini
+from image_text import checkTesseract
 
 WDA_EXCLUDEFROMCAPTURE = 0x00000011
 # Define constants for no-activate functionality
@@ -26,10 +27,10 @@ def afterWindowVisible():
     setWindowDisplayAffinity.argtypes = wintypes.HWND, wintypes.DWORD
     setWindowDisplayAffinity.restype = wintypes.BOOL
 
-    windowHandle = win32gui.FindWindow(None, "Screen Capture Tool")
+    windowHandle = win32gui.FindWindow(None, "InvisAI")
     if not windowHandle:
         webview.windows[0].evaluate_js("showError()")
-        print("Could not find window with title 'Screen Capture Tool'")
+        print("Could not find window")
     # getForegroundWindow = user32.GetForegroundWindow
     # getForegroundWindow.argtypes = ()
     # getForegroundWindow.restype = wintypes.HWND
@@ -56,3 +57,7 @@ def windowCreated():
     if not checkGemini():
         webview.windows[0].evaluate_js("disableGemini()")
         print("Gemini is not available. Disabling Gemini feature in UI.")
+
+    if not checkTesseract():
+        webview.windows[0].evaluate_js("warningTesseract()")
+        print("Tesseract is not installed. Disabling some features in UI.")

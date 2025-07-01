@@ -1,3 +1,7 @@
 old/
 har_and_cookies/
 __pycache__/
+ztest.py
+venv/
+build/
+dist/
