@@ -5,3 +5,5 @@ ztest.py
 venv/
 build/
 dist/
+settings.json
+test*

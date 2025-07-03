@@ -11,29 +11,60 @@ spec_root = os.path.dirname(SPEC)
 # Define data files to include
 datas = [
     (os.path.join(spec_root, 'ui'), 'ui'),  # Include the entire ui folder
-    (os.path.join(spec_root, 'eye.png'), '.'),  # Include the icon
-    (os.path.join(spec_root, 'har_and_cookies'), 'har_and_cookies'),  # Include har_and_cookies folder
+    (os.path.join(spec_root, 'google-eye.png'), '.'), 
+    (os.path.join(spec_root, 'google-eye.ico'), '.'),  # Include the ICO icon
+    (os.path.join(spec_root, 'notepad.ico'), '.'),  # Include the ICO notepad icon
+]
+
+# Define binary files to include
+binaries = [
+    (os.path.join(spec_root, 'chromedriver.exe'), '.'),  # Include the ChromeDriver executable
 ]
 
 # Add any other data files from dependencies if needed
-# datas += collect_data_files('pywebview')
+datas += collect_data_files('webview')
+datas += collect_data_files('g4f', includes=['**/*.json', '**/*.txt', '**/*.py'])
 
 a = Analysis(
     ['main.py'],
     pathex=[spec_root],
-    binaries=[],
+    binaries=binaries,
     datas=datas,
     hiddenimports=[
         'webview',
         'webview.platforms.winforms',
         'webview.platforms.cef',
         'webview.platforms.edgechromium',
-        'screen_capture_api',
+        'webview.platforms.mshtml',
+        'webview.platforms.gtk',
+        'webview.platforms.qt',
+        'webview.util',
+        'webview.js',
+        'apis.screen_capture_api',
         'window_manager',
-        'mouse_handler',
-        'ai',
-        'ai_checks',
-        'image_text',
+        'ai.ai',
+        'ai.ai_checks',
+        'utils.image_text',
+        'apis.main_api',
+        'apis.window_api',
+        'apis.mouse_events_api',
+        'other.settings_manager',
+        'other.loading_screen',
+        'utils.app_utils',
+        'other.har_capture',
+        'utils.path_utils',
+        'g4f',
+        'g4f.cookies',
+        'g4f.models',
+        'g4f.Provider',
+        'g4f.providers',
+        'browser_cookie3',
+        'shadowcopy',
+        'wmi',
+        'pythoncom',
+        'win32com',
+        'win32com.client',
+        'pywintypes',
     ],
     hookspath=[],
     hooksconfig={},
@@ -61,10 +92,11 @@ exe = EXE(
     upx=True,
     upx_exclude=[],
     runtime_tmpdir=None,
-    console=False,  # Set to True if you want to see console output for debugging
+    console=False,  # Enable console for debugging ChromeDriver issues
     disable_windowed_traceback=False,
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=os.path.join(spec_root, 'eye.png'),  # Set the application icon
+    icon=os.path.join(spec_root, 'google-eye.ico'),  # Set the application icon
+    onefile=True,  # Create a single executable file
 )

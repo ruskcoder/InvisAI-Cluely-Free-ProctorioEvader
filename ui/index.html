@@ -21,10 +21,16 @@
     <!-- Draggable Title Bar -->
     <div class="title-bar" id="titleBar">
         <div class="title-bar-left">
-            <span class="material-symbols-rounded app-icon">visibility</span>
-            <span class="app-title">InvisAI</span>
+            <span id="appIcon" class="material-symbols-rounded app-icon">visibility</span>
+            <span id="appTitle" class="app-title">InvisAI</span>
         </div>
         <div class="title-bar-right">
+            <button id="previewToggleBtn" class="title-bar-button preview-toggle-btn" onclick="togglePreview()" data-title="Desk Scan Mode">
+                <span id="previewToggleBtnIcon" class="material-symbols-rounded">preview_off</span>
+            </button>
+            <button id="settingsBtn" class="title-bar-button settings-btn" onclick="toggleSettings()">
+                <span id="settingsBtnIcon" class="material-symbols-rounded">settings</span>
+            </button>
             <button class="title-bar-button close-btn" onclick="closeWindow()">
                 <span class="material-symbols-rounded">close</span>
             </button>
@@ -32,6 +38,97 @@
     </div>
     
     <div class="container">
+        <!-- Settings Page -->
+        <div id="settingsPage" class="settings-page hidden">
+            <div class="settings-content">
+                <!-- Restart Warning -->
+                <div id="restartWarning" class="info hidden">
+                    <span class="material-symbols-rounded">restart_alt</span>
+                    <p>Window renaming requires a restart to take effect.</p>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3>Rename Window</h3>
+                        <p>Disguise the app as Notepad to hide from screen recording software</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="renameWindowToggle" onchange="updateRenameSetting(this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3>Enable 'S' Hotkey</h3>
+                        <p>Allow pressing 'S' key to start screen capture</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="enableSHotkeyToggle" onchange="updateHotkeySettings('enableSHotkey', this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <!-- AI Enable/Disable Settings -->
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3>Enable ChatGPT</h3>
+                        <p>Use ChatGPT for image analysis</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="enableChatGPTToggle" onchange="updateAISetting('enableChatGPT', this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3>Enable Copilot</h3>
+                        <p>Use Microsoft Copilot for image analysis</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="enableCopilotToggle" onchange="updateAISetting('enableCopilot', this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3>Enable Gemini</h3>
+                        <p>Use Google Gemini for image analysis</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="enableGeminiToggle" onchange="updateAISetting('enableGemini', this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3>Enable Qwen</h3>
+                        <p>Use Qwen AI for TEXT-ONLY analysis</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="enableQwenToggle" onchange="updateAISetting('enableQwen', this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3>Enable DeepSeek</h3>
+                        <p>Use DeepSeek AI for TEXT-ONLY analysis</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="enableDeepseekToggle" onchange="updateAISetting('enableDeepseek', this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div id="mainContent" class="main-content">
         <div class="error hidden">
             <span class="material-symbols-rounded">error</span>
             <p>Failed to set Window Display Affininty. This window will not be hidden. Please restart the app. </p>
@@ -39,7 +136,33 @@
 
         <div class="warning hidden" id="geminiWarning">
             <span class="material-symbols-rounded">warning</span>
-            <p>Please sign in to Gemini in Microsoft Edge and/or close Microsoft Edge to use this feature. </p>
+            <p>Please <strong>sign in to Gemini in Microsoft Edge</strong> and/or close Microsoft Edge to use this feature. </p>
+        </div>
+
+        <div class="warning hidden" id="copilotWarning">
+            <span class="material-symbols-rounded">warning</span>
+            <p>Copilot authentication needed. Click <a href="#" onclick="runHarGrabber()">here</a> to capture authentication data.</p>
+        </div>
+
+        <div class="info hidden" id="harInstructions">
+            <span class="material-symbols-rounded">info</span>
+            <div class="har-instructions-content">
+                <h4>Copilot Auth Setup</h4>
+                <div class="instruction-steps">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span class="step-text">Sign in to Copilot</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span class="step-text">Press "Complete" below</span>
+                    </div>
+                </div>
+                <button id="completeHarBtn" class="btn btn-primary" onclick="completeHarCapture()">
+                    <span class="material-symbols-rounded">check</span>
+                    Click here to complete
+                </button>
+            </div>
         </div>
 
         <div class="warning hidden" id="tesseractWarning">
@@ -50,6 +173,21 @@
         <button id="startBtn" class="start-button" onclick="startCapture()">
             Start Capture
         </button>
+        
+        <div id="votingSummary" class="voting-summary hidden">
+            <div class="voting-summary-inner">
+                <div class="summary-header">
+                    <span class="material-symbols-rounded">how_to_vote</span>
+                    <h3>AI Consensus</h3>
+                    <button class="close-consensus-btn" onclick="hideVotingSummary()">
+                        <span class="material-symbols-rounded">close</span>
+                    </button>
+                </div>
+                <div id="summaryContent" class="summary-content">
+                    <!-- Voting results will be displayed here -->
+                </div>
+            </div>
+        </div>
         
         <div id="screenshotContainer" class="screenshot-container">
             <!-- <img src="https://placehold.co/600x400" alt=""> -->
@@ -65,9 +203,20 @@
                 </div>
             </div>
         </div>
+        <div class="menu working disabled" id="copilot">
+            <div class="title">
+                <p>Copilot</p>
+                <span>No Option Given</span>
+            </div>
+            <div class="content-container">
+                <div class="content">
+                    
+                </div>
+            </div>
+        </div>
         <div class="menu working disabled" id="gemini">
             <div class="title">
-                <p>**Gemini</p>
+                <p>*Gemini</p>
                 <span>No Option Given</span>
             </div>
             <div class="content-container">
@@ -98,7 +247,8 @@
                 </div>
             </div>
         </div>
-        <p class="notice">** means WIP and may be unrelieable</p>
+        <p class="notice">** means WIP and may be unreliable</p>
+        </div> <!-- End main content -->
     </div>
 
     <script src="script.js"></script>
