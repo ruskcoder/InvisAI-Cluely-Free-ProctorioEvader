@@ -4,6 +4,7 @@
 > I do not condone cheating, and this app was made for educational purposes only. 
 
 A Windows application for *secretly* plugging anything into AI. The app is **hidden from all screen capture** using Windows APIs. This app also is **invisible to focus change detectors**!
+
 **Built as an alternative and a jab at Cluely, a closed-source software that makes people pay!!**
 
 ## Evade Proctorio with *style*
