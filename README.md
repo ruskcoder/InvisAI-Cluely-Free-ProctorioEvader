@@ -53,8 +53,14 @@ All the features in this app make it perfect to be undetectable to Proctorio!
 3. Press **Start Capture** or press **S**
 4. Left click on both your corners of the question. 
 5. Wait for the AIs to complete and give you an answer!
-    > [!IMPORTANT]
-    > Note: Qwen AI and DeepSeek AI don't have a direct image AI function, so InvisAI reads the text in the image and plugs in that. Because of this, these AIs don't support image/stimulus based questions. 
+> [!IMPORTANT]
+> Note: Qwen AI and DeepSeek AI don't have a direct image AI function, so InvisAI reads the text in the image and plugs in that. Because of this, these AIs don't support image/stimulus based questions.
+
+## Known Bugs: 
+- No error message if Chrome is not updated
+- Sometimes Copilot gives an invalid access token even after just signing in
+- Gemini not working even when signed in on Edge
+- Window takes time to initialize and do affinity
 
 ## Building from source
 1. Make sure you have Python and Git installed
